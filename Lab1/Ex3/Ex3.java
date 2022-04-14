@@ -16,7 +16,7 @@ public class Ex3 {
     public static void main(String[] args) {
         Thread t0 = new Thread(new MyThread());
         // Change the daemon status of thread t0.
-        t0.setDaemon(false);
+        t0.setDaemon(true);
         t0.start();
         try {
             Thread.sleep(5000);
