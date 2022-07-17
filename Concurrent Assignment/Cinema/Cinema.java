@@ -76,7 +76,7 @@ class TheaterHall {
             }else{
                 number = rand.ints(0,200).findFirst().getAsInt();
                 System.out.println("\nSeat " + number + " is already reserved/booked " + name + ". Booking next seat!" + "(Seat " + number + ")\n");
-                reserveSeat((number+1), name);
+                reserveSeat(number, name);
             }
         }
 
