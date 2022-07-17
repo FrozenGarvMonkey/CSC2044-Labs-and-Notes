@@ -62,7 +62,7 @@ class TheaterHall {
             seats[number] = 2;
     
             try {
-                Thread.sleep(rand.ints(500,1000).findFirst().getAsInt());
+                Thread.sleep(rand.ints(500,1001).findFirst().getAsInt());
                 confirmSeat(number, name);
             }
             catch(InterruptedException ex){
@@ -70,14 +70,13 @@ class TheaterHall {
             }
             
         }else{
-            if(number+1 > 199){
+            if(number < 199){
                 System.out.println("\nSeat " + number + " is already reserved/booked " + name + ". Booking next seat!" + "(Seat " + (number + 1)  + ")\n");
                 reserveSeat((number+1), name);
-            }else{
-                number = rand.ints(0,200).findFirst().getAsInt();
-                System.out.println("\nSeat " + number + " is already reserved/booked " + name + ". Booking next seat!" + "(Seat " + number + ")\n");
-                reserveSeat(number, name);
             }
+            int new_number = rand.ints(0,200).findFirst().getAsInt();
+            System.out.println("\nSeat " + number + " is already reserved/booked " + name + ". Booking next seat!" + "(Seat " + new_number + ")\n");
+            reserveSeat(new_number, name);
         }
 
     }
@@ -105,6 +104,8 @@ class TicketPortal {
                 hall.reserveSeat(rand.ints(0,200).findFirst().getAsInt(), name);
             }
             System.out.println("\nAll your selected seats have been booked " + name + ".\n");
+        }else{
+            System.out.println("Theater is fully booked!");
         }
 
 	}
