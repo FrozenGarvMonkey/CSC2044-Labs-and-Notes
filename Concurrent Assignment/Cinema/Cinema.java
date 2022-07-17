@@ -55,9 +55,9 @@ class TheaterHall {
     }
 
     public synchronized void reserveSeat(int number, String name){
+        Random rand = new Random();
         if (getSingleSeat(number) == 0){
             
-            Random rand = new Random();
             System.out.println("Reserving Seat " + number + " for " + name + " in Theater " + hall_number);
             seats[number] = 2;
     
@@ -70,8 +70,14 @@ class TheaterHall {
             }
             
         }else{
-            System.out.println("\nSeat " + number + " is already reserved/booked " + name + ". Booking next available seat!" + "(Seat " + (number + 1)  + ")\n");
-            reserveSeat((number+1), name);
+            if(number+1 > 199){
+                System.out.println("\nSeat " + number + " is already reserved/booked " + name + ". Booking next seat!" + "(Seat " + (number + 1)  + ")\n");
+                reserveSeat((number+1), name);
+            }else{
+                number = rand.ints(0,200).findFirst().getAsInt();
+                System.out.println("\nSeat " + number + " is already reserved/booked " + name + ". Booking next seat!" + "(Seat " + number + ")\n");
+                reserveSeat((number+1), name);
+            }
         }
 
     }
@@ -96,7 +102,7 @@ class TicketPortal {
         if (hall.getAvailableSeats() >= numberOfSeats){
             
             for (int i = 0; i < numberOfSeats; i++){
-                hall.reserveSeat(rand.ints(0,199).findFirst().getAsInt(), name);
+                hall.reserveSeat(rand.ints(0,200).findFirst().getAsInt(), name);
             }
             System.out.println("\nAll your selected seats have been booked " + name + ".\n");
         }
