@@ -70,7 +70,7 @@ class TheaterHall {
             }
             
         }else{
-            System.out.println("\nSeat " + number + " is already reserved/booked " + name + ". Booking next available seat!" + "(Seat " + (number + 1)  + ")");
+            System.out.println("\nSeat " + number + " is already reserved/booked " + name + ". Booking next available seat!" + "(Seat " + (number + 1)  + ")\n");
             reserveSeat((number+1), name);
         }
 
