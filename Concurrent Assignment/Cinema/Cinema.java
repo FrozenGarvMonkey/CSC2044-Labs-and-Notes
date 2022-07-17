@@ -70,13 +70,12 @@ class TheaterHall {
             }
             
         }else{
-            if(number < 199){
-                System.out.println("\nSeat " + number + " is already reserved/booked " + name + ". Booking next seat!" + "(Seat " + (number + 1)  + ")\n");
-                reserveSeat((number+1), name);
+            for (int i = 0; i < getAvailableSeats(); i++){
+                if (getSingleSeat(i) == 0){
+                    System.out.println("\nSeat " + number + " is already reserved/booked " + name + ". Booking next available seat!" + "(Seat " + i  + ")\n");
+                    reserveSeat((i), name);
+                }
             }
-            int new_number = rand.ints(0,200).findFirst().getAsInt();
-            System.out.println("\nSeat " + number + " is already reserved/booked " + name + ". Booking next seat!" + "(Seat " + new_number + ")\n");
-            reserveSeat(new_number, name);
         }
 
     }
