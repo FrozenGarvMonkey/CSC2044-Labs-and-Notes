@@ -1,4 +1,3 @@
-package Lab3;
 
 class Order {
     private int order = 0;
