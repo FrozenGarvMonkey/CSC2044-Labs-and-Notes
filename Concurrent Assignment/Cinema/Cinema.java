@@ -38,11 +38,11 @@ class Customer extends Thread {
  * - Represents each of the theater halls.
  * - Contains the total number of available seats and the seat arrays.
  */
-class TheaterHall {
+class TheatreHall {
     private int hall_number, availableSeats;
     int[] seats;
 
-    public TheaterHall(int hall_number, int availableSeats){
+    public TheatreHall(int hall_number, int availableSeats){
         this.hall_number = hall_number;
         this.availableSeats = availableSeats;    
         this.seats = new int[availableSeats];
@@ -114,11 +114,11 @@ class TheaterHall {
 class TicketPortal {
     Random rand = new Random();
 
-    TheaterHall hall_1 = new TheaterHall(1,200);
-    TheaterHall hall_2 = new TheaterHall(2,200);
+    TheatreHall hall_1 = new TheatreHall(1,200);
+    TheatreHall hall_2 = new TheatreHall(2,200);
 
     // Common method for all bookings within a hall.
-	public void hallHandle(String name, int numberOfSeats, TheaterHall hall) {
+	public void hallHandle(String name, int numberOfSeats, TheatreHall hall) {
 
         if (hall.getAvailableSeats() >= numberOfSeats){
             
