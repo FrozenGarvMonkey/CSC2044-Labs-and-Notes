@@ -86,7 +86,7 @@ class Calculator implements Runnable{
     public void run(){
         List<User> transaction_history = CSVParser("19073535.csv");
         
-        for(int i = start_curr; i < end_curr; i++){
+        for(int i = start_curr; i <= end_curr; i++){
             boolean foundInCollection = false;
             User row = transaction_history.get(i);
 
@@ -110,7 +110,7 @@ public class Fintech {
     public static void main(String[] args) throws InterruptedException {
         Calculator task1 = new Calculator(0,30000);
         Calculator task2 = new Calculator(30000,60000);
-        Calculator task3 = new Calculator(60000,80500);
+        Calculator task3 = new Calculator(60000,80456);
 
         Thread t1 = new Thread(task1);
         Thread t2 = new Thread(task2);
