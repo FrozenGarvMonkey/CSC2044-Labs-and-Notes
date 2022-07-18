@@ -108,17 +108,20 @@ class Calculator implements Runnable{
 
 public class Fintech {
     public static void main(String[] args) throws InterruptedException {
-        Calculator task1 = new Calculator(0,30000);
-        Calculator task2 = new Calculator(30000,60000);
-        Calculator task3 = new Calculator(60000,80456);
+        Calculator task1 = new Calculator(0,20000);
+        Calculator task2 = new Calculator(20000,40000);
+        Calculator task3 = new Calculator(40000,60000);
+        Calculator task4 = new Calculator(60000,80455);
 
         Thread t1 = new Thread(task1);
         Thread t2 = new Thread(task2);
         Thread t3 = new Thread(task3);
+        Thread t4 = new Thread(task4);
 
         t1.start();
         t2.start();
         t3.start();
+        t4.start();
 
         try {
             t1.join();
@@ -135,10 +138,16 @@ public class Fintech {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        try {
+            t4.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         Calculator.UC.sort((u1,u2) -> u1.getUser_id().compareTo(u2.getUser_id()));
+        System.out.println("user_id \t | \t total_money_spent");
         for (int i = 0; i < Calculator.UC.size(); i++){
-            System.out.println(Calculator.UC.get(i).getUser_id() + " spent " + String.format("%.2f", Calculator.UC.get(i).getTotal_spent()));
+            System.out.println(Calculator.UC.get(i).getUser_id() + " \t | \t " + String.format("%.2f", Calculator.UC.get(i).getTotal_spent()));
         }
     }
 }
