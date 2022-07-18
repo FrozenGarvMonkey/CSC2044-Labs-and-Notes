@@ -9,6 +9,11 @@ package Cinema;
 
 import java.util.Random;
 
+/* 
+ * Customer Thread :-
+ * - Customer carries name, number of seats, and the theater hall generated randomly in the main thread.
+ * - Each customer opens a thread of the online Ticket Portal
+ */
 class Customer extends Thread {
 
 	private TicketPortal ticketPortal;
@@ -28,6 +33,11 @@ class Customer extends Thread {
 	}
 }
 
+/* 
+ * Class TheaterHall :-
+ * - Represents each of the theater halls.
+ * - Contains the total number of available seats and the seat arrays.
+ */
 class TheaterHall {
     private int hall_number, availableSeats;
     int[] seats;
@@ -42,20 +52,27 @@ class TheaterHall {
      * We initialise our array of seats. Each single seat can be one of three values:
      * - seat[i] = 0 (Seat is Available)
      * - seat[i] = 1 (Seat is Confirmed Booked)
-     * - seat[i] = 2 (Seat is Reserved but not confirmed
+     * - seat[i] = 2 (Seat is Reserved but not confirmed)
      */
 
-
+    // Returns Total Number of Seats Available
     public int getAvailableSeats() {
         return availableSeats;
     }
 
+    // Returns a single seat's value within the seat array.
     public int getSingleSeat(int number){
         return seats[number];
     }
 
+    /* 
+     * Synchronised method to reserve a seat. 
+     * Seat value is changed to 2 to indicate a reserved but not confirmed seat.
+     * Once the thread delays by a random value between 500ms to 1000ms, it confirms the booking.
+     */
     public synchronized void reserveSeat(int number, String name){
         Random rand = new Random();
+        // Condition to check if seat is available
         if (getSingleSeat(number) == 0){
             
             System.out.println("Reserving Seat " + number + " for " + name + " in Theater " + hall_number);
@@ -70,6 +87,7 @@ class TheaterHall {
             }
             
         }else{
+            // If a seat is not available, it checks for the next available seat within the array.
             for (int i = 0; i < getAvailableSeats(); i++){
                 if (getSingleSeat(i) == 0){
                     System.out.println("\nSeat " + number + " is already reserved/booked " + name + ". Booking next available seat!" + "(Seat " + i  + ")\n");
@@ -79,7 +97,7 @@ class TheaterHall {
         }
 
     }
-
+    // Confirms a seat booking.
     public void confirmSeat(int number, String name){
         System.out.println("Confirming Seat " + number + " for " + name + " in Theater " + hall_number);
         seats[number] = 1;
@@ -88,13 +106,18 @@ class TheaterHall {
 
 }
 
+/* 
+ * Class TicketPortal :-
+ * - Initialises both theater halls
+ * - Portal to book tickets based on selected hall
+ */
 class TicketPortal {
     Random rand = new Random();
 
     TheaterHall hall_1 = new TheaterHall(1,200);
     TheaterHall hall_2 = new TheaterHall(2,200);
 
-
+    // Common method for all bookings within a hall.
 	public void hallHandle(String name, int numberOfSeats, TheaterHall hall) {
 
         if (hall.getAvailableSeats() >= numberOfSeats){
@@ -108,6 +131,7 @@ class TicketPortal {
         }
 
 	}
+    // Condition to check which hall the customer is interested in booking.
 	public void bookTicket(String name, int numberOfSeats, int theaterHall) {
     
         if (theaterHall == 1){
@@ -122,8 +146,10 @@ class TicketPortal {
 	}
 }
 
+// Driver Class
 public class Cinema{
 
+    // Returns a value between min(inclusive) and max(exclusive)
     public static int randomRange(int min, int max){
         Random rand = new Random();
         return rand.ints(min,max+1).findFirst().getAsInt();
@@ -132,6 +158,7 @@ public class Cinema{
     public static void main(String[] args) {
         TicketPortal ticketPortal = new TicketPortal();
         
+        // 200 customer threads generated with random values.
         for (int i = 0; i < 200; i++){
             Customer t = new Customer(ticketPortal, String.format("Customer %d", i+1), randomRange(1,3), randomRange(1,2));
             t.start();

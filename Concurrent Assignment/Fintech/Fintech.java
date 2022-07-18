@@ -7,6 +7,10 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+/* 
+ * Class User :-
+ * - Holds data for each row within the datasheet.
+ */
 class User{
 
     float share_price;
@@ -15,6 +19,7 @@ class User{
     String transaction_id;
     String stock_symbol;
     
+    // Parses string data from file to equivalent data types.
     public User(String[] row_data) {
         this.share_price = Float.parseFloat(row_data[0]);
         this.user_id = row_data[1];
@@ -27,12 +32,18 @@ class User{
         return user_id;
     }
 
+    // Returns the total cost spent for the specific object.
     public float getProduct() {
         return share_bought * share_price;
     }
     
 }
 
+/* 
+ * Class UserCollection :-
+ * - Holds data for each object for the collection of user data.
+ * - A simplified version of the User class existing solely for summation.
+ */
 class UserCollection {
     String user_id;
     float total_spent = 0;
@@ -51,13 +62,22 @@ class UserCollection {
         return total_spent;
     }
     
+    // Adds a value to the total spent for the specific user.
     public void AddToTotal(float amount){
         total_spent += amount;
     }
 }
 
+/* 
+ * Class Calculator:- 
+ * - Reads and parses the datasheet.
+ * - Iterates over the parsed data and calculates the total amount spent on stocks for each user.
+ * - All user_id fields are filtered and undergo summation of their total amount spent.
+ */
 class Calculator implements Runnable{
-    private int start_curr, end_curr;
+    // Start and End Cursor position for the thread.
+    private int start_curr, end_curr; 
+    // Collection of users
     public static ArrayList<UserCollection> UC = new ArrayList<>();
 
     public Calculator(int start_curr, int end_curr) {
@@ -65,6 +85,7 @@ class Calculator implements Runnable{
         this.end_curr = end_curr;
     }
 
+    // Parses the datasheet and returns it as an ArrayList.
     private static List<User> CSVParser (String file){
         List<User> transaction_history = new ArrayList<>();
 
@@ -84,12 +105,21 @@ class Calculator implements Runnable{
     }
 
     public void run(){
+        // ArrayList containing all data from the datasheet.
         List<User> transaction_history = CSVParser("19073535.csv");
         
         for(int i = start_curr; i <= end_curr; i++){
             boolean foundInCollection = false;
             User row = transaction_history.get(i);
 
+            /* 
+             * Checks if the user_id of the current row matches with any of the
+             * users in the User Collection. 
+             * 
+             * If it does, the total spent is simply added to the User within the Collection.
+             * 
+             * If it does not, the user_id is added to the User Collection along with the total_spent.
+             */
             for(UserCollection u : UC){
                 if(row.getUser_id().equals(u.getUser_id())){
                     u.AddToTotal(row.getProduct());
@@ -105,9 +135,16 @@ class Calculator implements Runnable{
     }
 }
 
-
+/* 
+ * Driver Class
+ */
 public class Fintech {
     public static void main(String[] args) throws InterruptedException {
+
+        /* 
+         * 4 Tasks Defined with each given 20000 fields to iterate through.
+         * Splitting the file into 4 equal chunks speeds up the computational speed.
+         */
         Calculator task1 = new Calculator(0,20000);
         Calculator task2 = new Calculator(20000,40000);
         Calculator task3 = new Calculator(40000,60000);
@@ -144,7 +181,9 @@ public class Fintech {
             e.printStackTrace();
         }
 
+        // The User Collection is sorted by user_id.
         Calculator.UC.sort((u1,u2) -> u1.getUser_id().compareTo(u2.getUser_id()));
+        // Output Formatting.
         System.out.println("user_id \t | \t total_money_spent");
         for (int i = 0; i < Calculator.UC.size(); i++){
             System.out.println(Calculator.UC.get(i).getUser_id() + " \t | \t " + String.format("%.2f", Calculator.UC.get(i).getTotal_spent()));
